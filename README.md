@@ -168,6 +168,29 @@ To get execution count statistics, use:
 spim -keepstats -file foo.s
 ```
 
+For example: The following two files are the soure and MIPS assembly code for a program to compute and print out the value `factorial(7)`:
+```
+fact.c
+fact.s
+```
+
+When we run it on SPIM using the command `sprim -keepstats -file fact.s`, the generated output is:
+
+```
+5040
+States -- #instructions : 307
+          #reads : 84   #writes 69  #branches 31    #other  123
+```
+
+The first line is the output from the program; the last two lines are statistics about the executed instrucitons.
+
+# Submitting your work
+Submit your work in GradeScope in the submission area created for this assignment. You should submit the following files:
+
+- All files neeed to build an executable of your compiler.
+- A `Makefile` that suppors the functionality described above.
+
+
 
 
 
