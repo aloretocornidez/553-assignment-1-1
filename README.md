@@ -50,7 +50,7 @@ No operators, no array references, no function calls.
 
 ## Behavior
 
-### General
+### General Behavior
 
 The executable that implements your compiler should be called compile. It will take its input from stdin and generate MIPS assembly code to stdout. Error messages, if any, will be sent to stderr.
 
@@ -89,9 +89,9 @@ int main (){
 }
 ```
 
-*SPIM Output*
+SPIM Output
 
-```
+```s
 SPIM Version 8.0 of January 8, 2010
 Copyright 1990-2010, James R. Larus.
 All Rights Reserved.
@@ -112,9 +112,9 @@ int main() {
 }
 ```
 
-*SPIM Output*
+SPIM Output
 
-```
+```s
 SPIM Version 8.0 of January 8, 2010
 Copyright 1990-2010, James R. Larus.
 All Rights Reserved.
@@ -128,7 +128,7 @@ This is similar to the way we use library functions like `prinft()`.
 To make this work, your compiler should generate the following sequence of `MIPS` instructions for `println()`.
 (This is conceptually analogous to linking in the library code for `printf()` statically).
 
-```mips
+```s
 
 .align 2
 .data
@@ -161,16 +161,16 @@ You should submit a `Makefile` that provides (at least) the following targets:
   - The simlest way to guard agains such conflcts is to add an underscore "_" at the front of each identifier in the generated code. (This is the reason the label for the function `println()` in the code shown in section 3.2 is `_println`.)
   - If you do, howeve,r you should keep in minde that execution still needs to begin at `main` (which then jumps to `_main`). The simplest way to handle this is to have the code generated create a label `main` whose code is a single unconditional jump to `_main:`
 
-    ```
-    main:
-    j _mainSPIM Version 8.0 of January 8, 2010
+```asm
+main:
+j _mainSPIM Version 8.0 of January 8, 2010
 
 Copyright 1990-2010, James R. Larus.
 All Rights Reserved.
 See the file README for a full copyright notice.
 Loaded: /usr/lib/spim/exceptions.s
 12345
-    ```
+```
 
 - Large integer constants: Immediate operands can be at most 16 bits wide. Loading a constant more than 16 bits wide into a register requires two instructions.
 
@@ -184,26 +184,26 @@ urce code for `spim-stats` is available as a zipped file and also on the CD Depa
 
 To run `SPIM` on a file `foo.s` containing `MIPS` assembly code, use:
 
-```
+```bash
 spim -file foo.s
 ```
 
 To get execution count statistics, use:
 
-```
+```bash
 spim -keepstats -file foo.s
 ```
 
 For example: The following two files are the soure and MIPS assembly code for a program to compute and print out the value `factorial(7)`:
 
-```
+```bash
 fact.c
 fact.s
 ```
 
 When we run it on SPIM using the command `sprim -keepstats -file fact.s`, the generated output is:
 
-```
+```s
 5040
 States -- #instructions : 307
           #reads : 84   #writes 69  #branches 31    #other  123
