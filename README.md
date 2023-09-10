@@ -1,5 +1,11 @@
 # 553-assignment-1-1
+CSC 553: Principles of Compilation
 
+Programming Assignment 1 (Code Generation)
+Milestone 1: Handling function calls and returns
+
+Start: Tuesday September 5th, 2023
+Due: 11:50 PM Friday September 15th, 2023
 
 # General
 This assignment involves generating code for C--. 
@@ -140,7 +146,12 @@ You should submit a `Makefile` that provides (at least) the following targets:
     - If you do, howeve,r you should keep in minde that execution still needs to begin at `main` (which then jumps to `_main`). The simplest way to handle this is to have the code generated create a label `main` whose code is a single unconditional jump to `_main:`
     ```
     main:
-    j _main
+    j _mainSPIM Version 8.0 of January 8, 2010
+Copyright 1990-2010, James R. Larus.
+All Rights Reserved.
+See the file README for a full copyright notice.
+Loaded: /usr/lib/spim/exceptions.s
+12345
     ```
 - Large integer constants: Immediate operands can be at most 16 bits wide. Loading a constant more than 16 bits wide into a register requires two instructions.
 
