@@ -1,219 +1,120 @@
-# 553-assignment-1-1
+# 553-assignment-0
 
-CSC 553: Principles of Compilation
+This directory contains files to create a front end for a
+C-- compiler using flex and yacc.
 
-Programming Assignment 1 (Code Generation)
-Milestone 1: Handling function calls and returns
+## Software Assumptions
 
-Start: Tuesday September 5th, 2023
-Due: 11:50 PM Friday September 15th, 2023
+This software has been tested on Ubuntu systems; it may or may not work
+properly on other systems.
 
-## General
+To compile and run this code, you need the compiler construction tools
+flex and yacc; the GNU tool bison can be used instead of yacc.  These tools
+are available on lectura.cs.arizona.edu.  If you want to install them on your
+own computer, you can find instructions for doing so at [https://ccm.net/computing/linux/1711-how-to-install-flex-and-bison-under-ubuntu/].
 
-This assignment involves generating code for C--.
-You will write code to traverse the syntax tree for each function in a program and generate three-address statements, then translate these into MIPS assembly code and output the assembly code generated.
-Your code generator should reuse temporaries as far as possible.
+## Building The System
 
-For intermediate code generation, you can use the three-address instruction set given here; a translation from this instruction set to MIPS assembly code is given here.
-You are not required to adhere to this particular three-address instruction set, and are free to deviate from it if you want; however, if you do you will have to work out the mapping to MIPS assembly code yourself.
-*Note*: Even though the intermediate code plays a relatively small role in this assignment, future assignments will involve dataflow analysis and machine-independent optimization using the intermediate code generated from this assignment.
+The file 'Makefile' in this directory uses yacc.  If you are using bison
+instead of yacc, use the command 'bison -y' instead of 'yacc' in this
+line in Makefile; see "man bison" for details.
 
-## Scope of this milestone
+Type "make", this will create an executable named "compile".
 
-For this milestone my test cases will consider only the following subset of C--.
-You are, of course, free to go beyond this subset and implement additional features of C--: that will mean less work for subsequent milestones.
-But this is what I will test.
+## Invoking The Program
 
-### Global and local variables
+The program 'compile' reads from stdin and writes error messages to stderr.
+If compiled with the flag -DDEBUG, syntax trees are printed to stdout.  Other
+than this, syntactically correct input files are accepted silently.
 
-Scalar variables of type int and char. No arrays.
+## Syntax Tree Processing
 
-### Function bodies A sequence of statements
+The function process_syntax_tree(), defined in the file process_syntax_tree.c,
+can be used to process the syntax tree of each function.  This function is
+called by the parser once the syntax tree for a function has been constructed;
+the arguments passed into it are: (1) a pointer to the global symbol table entry
+for the function name; and (2) a pointer to the root of the syntax tree for the
+function body.
 
-Each statement is as described below.
+In the code that you start out with, process_syntax_tree() conditionally (if the
+symbol DEBUG is defined at compile time) calls a function to traverse and print
+out the syntax tree it is passed.  You can modify this function and add your own
+code to process syntax trees as desired.
 
-Statements
+## Files
 
-- Assignment statements.
-- Function calls.
+These are the files present initially:
 
-No *if*, *while*, *for*, or *return* statements.
+  `README.md`: this file
 
-Expressions appearing on the right-hand side of assignments and as arguments to function calls are limited to those described below.
+  `Makefile`: builds the front end; this results in an executable called "compile".
+    Defining the symbol DEBUG in the variable CFLAGS will cause the syntax tree to be printed out after processing each function.  NOTE: This behavior can (and should) be changed by modifying the function process_syntax_tree() defined in the file process_syntax_tree.c.
 
-Expressions
+  `main.c`: The driver program that calls the parser.
 
-- Integer constants
-- Scalar variables
+  `error.h`: Defines various types of errors for special handling.
 
-No operators, no array references, no function calls.
+  `error.c`: Routines for reporting error messages.
 
-## Behavior
+  `parser.y`: Yacc specification for the parser.
 
-### General Behavior
+  `print.c`: Code for printing stuff out.  Right now it contains code for printing out syntax trees.
 
-The executable that implements your compiler should be called compile. It will take its input from stdin and generate MIPS assembly code to stdout. Error messages, if any, will be sent to stderr.
+  `protos.h`: Prototypes. Right now it contains prototypes for syntax tree accessor functions.
 
-## I/O
+  `scanner.l`: Flex specification for the scanner.
 
-Your programs will print out values using the following routine:
+  `symbol-table.h`: Typedefs etc. for symbol tables.
 
-```c
-void println(int val){
-    printf("%d\n", val);
-}
-```
+  `symbol-table.c`: Code for maintaining and accessing the symbol table.
 
-To make type checking work, these will be declated as **externs** in the input programs. For example:
+  `syntax-tree.h`: Typedefs etc. for syntax trees.
 
-```c
-extern void println(int x)''
+  `syntax-tree.c`: Code for constructing the syntax tree.
 
-void main(void)
-{
-    int x;
-    x = 123;
-    println(x);
-}
-```
+  `util.h`: Declarations and prototypes for utility routines.
 
-The examples below show the output generated when the code generated from the input program is executed on SPIM:
+  `util.c`: Assorted utilities.
 
-*Example 1*
-Input program
+Additionally, the following files are created during the build process:
 
-```c
-extern void println(int x);
-int main (){
-    println(34567);
-}
-```
+  y.tab.h,
+  y.tab.c,
+  y.output Created by yacc.
 
-SPIM Output
+  lex.yy.c Created by flex.
 
-```s
-SPIM Version 8.0 of January 8, 2010
-Copyright 1990-2010, James R. Larus.
-All Rights Reserved.
-See the file README for a full copyright notice.
-Loaded: /usr/lib/spim/exceptions.s
-34567
-```
+## Global Variables
 
-*Example 2*
-Input Program:
+  `char *id_name`  When the scanner recognizes an identifier, this
+   variable points to (a copy of) the lexeme.  This is
+   what needs to be accessed when you subsequently
+   want to get at the identifier's name, since by
+   that time yytext may have been long since overwritten.
 
-```c
-extern void println(int x);
-int main() {
-    int x;
-    x = 12345;
-    println(x);
-}
-```
+   Defined by the function id_or_keywd() in file
+      scanner.l.
 
-SPIM Output
+  int ival              When a scanner recognizes an integer or character
+                        constant, this variable is assigned the value of
+                        that constant.  Defined in scanner.l.
 
-```s
-SPIM Version 8.0 of January 8, 2010
-Copyright 1990-2010, James R. Larus.
-All Rights Reserved.
-See the file README for a full copyright notice.
-Loaded: /usr/lib/spim/exceptions.s
-12345
-```
+  int linenum  Contains the line number currently being processed.
+   Typically used in error messages.  Defined in scanner.l.
 
-Note that the input program uses `println()` but does not **define** it.
-This is similar to the way we use library functions like `prinft()`.
-To make this work, your compiler should generate the following sequence of `MIPS` instructions for `println()`.
-(This is conceptually analogous to linking in the library code for `printf()` statically).
+  int errstate  Indicates what kind of an error has occurred.  The
+   parser treats a few kinds of errors specially: the
+   nature of such special errors is communicated to yyerror()
+   via the variable errstate.  For the values this can
+   take on, see errmrgs.h --- the value ORDINARY refers
+   to errors that don't get any special handling.
 
-```s
+## Symbol Tables
 
-.align 2
-.data
-_nl: .asciiz "\n"
+Declarations pertaining to symbol tables are in the file symbol-table.h.
 
-.align 2
-.text
-# println: print out an integer followed by a newline
-_println:
-    li $v0, 1
-    lw $a0, 0($sp)
-    syscall
-    li $v0, 4
-    la $a0, _nl
-    syscall
-    jr $ra
-```
+## Syntax Trees
 
-### Makefile
-
-You should submit a `Makefile` that provides (at least) the following targets:
-
-`make clean`: Deletes any object files (*.o) as well as the file 'compile'
-
-`make compile`: Compiles all the files from scratch and creates an executable file named 'compile'
-
-## Gotchas to Watch Out For
-
-- Variables and funciton names in the input program that conflict with MIPS opcodes, e.g., **b**.
-  - The simlest way to guard agains such conflcts is to add an underscore "_" at the front of each identifier in the generated code. (This is the reason the label for the function `println()` in the code shown in section 3.2 is `_println`.)
-  - If you do, howeve,r you should keep in minde that execution still needs to begin at `main` (which then jumps to `_main`). The simplest way to handle this is to have the code generated create a label `main` whose code is a single unconditional jump to `_main:`
-
-```asm
-main:
-j _mainSPIM Version 8.0 of January 8, 2010
-
-Copyright 1990-2010, James R. Larus.
-All Rights Reserved.
-See the file README for a full copyright notice.
-Loaded: /usr/lib/spim/exceptions.s
-12345
-```
-
-- Large integer constants: Immediate operands can be at most 16 bits wide. Loading a constant more than 16 bits wide into a register requires two instructions.
-
-## Running the Generated MIPS Code
-
-I will run the `MIPS` assembly code generated by your compiler using `spim-stats`, a version of `SPIM` that provide statistics on different kinds of instructions executed by a program.
-(**Note:** For this assignment I will only test whther the code generated by your compiler behaves gorrectly.
-Instruction execution counts will be used to evaluate the effects of optimizations once we get to that point.)
-
-urce code for `spim-stats` is available as a zipped file and also on the CD Department server `lectura` in the directory `/home/cs553/fall23/spim-stats`; the executable for this version of `SPIM` is on `lectura` in the file `/home/cs553/spring23/bin/spim`
-
-To run `SPIM` on a file `foo.s` containing `MIPS` assembly code, use:
-
-```bash
-spim -file foo.s
-```
-
-To get execution count statistics, use:
-
-```bash
-spim -keepstats -file foo.s
-```
-
-For example: The following two files are the soure and MIPS assembly code for a program to compute and print out the value `factorial(7)`:
-
-```bash
-fact.c
-fact.s
-```
-
-When we run it on SPIM using the command `sprim -keepstats -file fact.s`, the generated output is:
-
-```s
-5040
-States -- #instructions : 307
-          #reads : 84   #writes 69  #branches 31    #other  123
-```
-
-The first line is the output from the program; the last two lines are statistics about the executed instrucitons.
-
-## Submitting your work
-
-Submit your work in GradeScope in the submission area created for this assignment. You should submit the following files:
-
-- All files neeed to build an executable of your compiler.
-- A `Makefile` that suppors the functionality described above.
+Declarations pertaining to syntax trees are in the file syntax-tree.h.
+Components of syntax tree nodes can be accessed via the accessor functions
+whose prototypes are given in protos.h.
