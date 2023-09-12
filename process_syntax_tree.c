@@ -191,25 +191,25 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body)
 
   
   // Print function name
-  printf("@@FUN: %s\n", fn_name->name);
+  // printf("@@FUN: %s\n", fn_name->name);
   
 
   // Test each possible node type and traverse the tree to get a count for the number of that node type.
-  for(int nodeType = 0; nodeType < 27; nodeType++)
-  {
+  // for(int nodeType = 0; nodeType < 27; nodeType++)
+  // {
 
-    // Reset count
-    int count = 0;
+  //   // Reset count
+  //   int count = 0;
 
-    // Count the number of nodes that match the node type.
-    treeTraversal(fn_body, &count, nodeType);
+  //   // Count the number of nodes that match the node type.
+  //   treeTraversal(fn_body, &count, nodeType);
 
 
-    // Print the count of the node type.
-    if(count > 0){
-      printf("%s: %d\n", nodeTypeName[nodeType], count);
-    }
-  }
+  //   // Print the count of the node type.
+  //   if(count > 0){
+  //     printf("%s: %d\n", nodeTypeName[nodeType], count);
+  //   }
+  // }
 
 
   return;
