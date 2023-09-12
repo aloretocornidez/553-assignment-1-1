@@ -42,7 +42,12 @@ static char *nodeTypeName[] ={
   "STnodeList"
 };
 
+// Print the syntax tree.
 extern void printSyntaxTree(tnode *t, int n, int depth);
+
+
+// Print line declaration from professor.
+// extern void println(int val);
 
 
 /* 
@@ -86,7 +91,7 @@ void treeTraversal(tnode* fn_body, int* count, int testNodeType)
 
     case UnaryMinus:
     case LogicalNot:
-      // treeTraversal(stUnop_Op(fn_body), count, testNodeType);
+      treeTraversal(stUnop_Op(fn_body), count, testNodeType);
 
     
     break;
@@ -210,3 +215,20 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body)
   return;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void println(int val) {
+printf("%d\n", val);
+}
