@@ -4,42 +4,40 @@
  *     perform any desired actions.
  */
 
-#include <stdio.h>
 #include "global.h"
 #include "protos.h"
 #include "syntax-tree.h"
+#include <stdio.h>
 
-static char *nodeTypeName[] = {
-    "Error",
-    "Intcon",
-    "Charcon",
-    "Stringcon",
-    "Var",
-    "ArraySubscript",
-    "Plus",
-    "UnaryMinus",
-    "BinaryMinus",
-    "Mult",
-    "Div",
-    "Equals",
-    "Neq",
-    "Leq",
-    "Lt",
-    "Geq",
-    "Gt",
-    "LogicalAnd",
-    "LogicalOr",
-    "LogicalNot",
-    "FunCall",
-    "Assg",
-    "Return",
-    "For",
-    "While",
-    "If",
-    "STnodeList"};
+static char *nodeTypeName[] = {"Error",     "Intcon",     "Charcon",
+                               "Stringcon", "Var",        "ArraySubscript",
+                               "Plus",      "UnaryMinus", "BinaryMinus",
+                               "Mult",      "Div",        "Equals",
+                               "Neq",       "Leq",        "Lt",
+                               "Geq",       "Gt",         "LogicalAnd",
+                               "LogicalOr", "LogicalNot", "FunCall",
+                               "Assg",      "Return",     "For",
+                               "While",     "If",         "STnodeList"};
 
 // Print the syntax tree.
 extern void printSyntaxTree(tnode *t, int n, int depth);
+
+
+
+
+
+// Generate mips code using symbol table entries. 
+void generateIntermediateCode();
+
+// Generate mips code from the generated intermediate language.
+void generateMipsCode();
+
+
+
+
+
+
+
 
 
 /*
@@ -47,27 +45,24 @@ extern void printSyntaxTree(tnode *t, int n, int depth);
  * treeTraversal(fn_body, count, testNode)
  *
  */
-void treeTraversal(tnode *fn_body, int *count, int testNodeType)
-{
+void treeTraversal(tnode *fn_body, int *count, int testNodeType) {
 
   tnode *tntmp0;
 
   // Check if the node exists.
-  if (fn_body == NULL)
-  {
+  if (fn_body == NULL) {
     return;
   }
 
-  // Increase the count of the node type if the node matches the current test node.
-  if (fn_body->ntype == testNodeType)
-  {
-    // printf("fn_body->type matches testNodeType with value: (%d): %s\n", testNodeType, nodeTypeName[fn_body->ntype]);
+  // Increase the count of the node type if the node matches the current test
+  // node.
+  if (fn_body->ntype == testNodeType) {
+    // printf("fn_body->type matches testNodeType with value: (%d): %s\n",
+    // testNodeType, nodeTypeName[fn_body->ntype]);
     (*count)++;
   }
-
   // Iterate syntax tree with proper recursive pointers.
-  switch (fn_body->ntype)
-  {
+  switch (fn_body->ntype) {
   case Error:
   case Intcon:
   case Charcon:
@@ -136,8 +131,7 @@ void treeTraversal(tnode *fn_body, int *count, int testNodeType)
     break;
 
   case STnodeList: /* list of syntax tree nodes */
-    for (tntmp0 = fn_body; tntmp0 != NULL; tntmp0 = stList_Rest(tntmp0))
-    {
+    for (tntmp0 = fn_body; tntmp0 != NULL; tntmp0 = stList_Rest(tntmp0)) {
       treeTraversal(stList_Head(tntmp0), count, testNodeType);
     }
 
@@ -156,15 +150,13 @@ void treeTraversal(tnode *fn_body, int *count, int testNodeType)
  * This function can be used to carry out tree traversals of the
  * function's syntax tree.
  */
-void process_syntax_tree(symtabnode *fn_name, tnode *fn_body)
-{
+void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
 #ifdef DEBUG
   printf("@@FUN: %s\n", fn_name->name);
   printf("@@BODY:\n");
   printSyntaxTree(fn_body, 4, 0);
   printf("-----\n");
 #endif
-
 
   /*
    * Homework 0
@@ -174,8 +166,8 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body)
   // Print function name
   // printf("@@FUN: %s\n", fn_name->name);
 
-  // Test each possible node type and traverse the tree to get a count for the number of that node type.
-  for(int nodeType = 0; nodeType < 27; nodeType++)
+  // Test each possible node type and traverse the tree to get a count for the
+  number of that node type. for(int nodeType = 0; nodeType < 27; nodeType++)
   {
 
     // Reset count
@@ -196,12 +188,12 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body)
    */
   
   // Generate the Intermediate language.
+  generateIntermediateCode();
 
-  // Genreate mips code.
+  // Generate mips code.
+  generateMipsCode();
 
-
-
-
+  // 
 
   return;
 }
