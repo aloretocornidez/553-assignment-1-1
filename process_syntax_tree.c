@@ -142,6 +142,35 @@ void treeTraversal(tnode *fn_body, int *count, int testNodeType) {
   }
 }
 
+
+// Homework 0
+void countNodeTypes(symtabnode *fn_name, tnode *fn_body)
+{
+ 
+  // Print function name
+  // printf("@@FUN: %s\n", fn_name->name);
+
+  // Test each possible node type and traverse the tree to get a count for the number of that node type.
+  for(int nodeType = 0; nodeType < 27; nodeType++)
+  {
+
+    // Reset count
+    int count = 0;
+
+    // Count the number of nodes that match the node type.
+    treeTraversal(fn_body, &count, nodeType);
+
+    // Print the count of the node type.
+    if(count > 0){
+      printf("%s: %d\n", nodeTypeName[nodeType], count);
+    }
+  }
+  
+
+}
+
+
+
 /*
  * process_syntax_tree(fn_name, fn_body) -- fn_name is a poiner to
  * the symbol table entry of the function being processed (which can
@@ -158,30 +187,7 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
   printf("-----\n");
 #endif
 
-  /*
-   * Homework 0
-   */
 
-  /*
-  // Print function name
-  // printf("@@FUN: %s\n", fn_name->name);
-
-  // Test each possible node type and traverse the tree to get a count for the
-  number of that node type. for(int nodeType = 0; nodeType < 27; nodeType++)
-  {
-
-    // Reset count
-    int count = 0;
-
-    // Count the number of nodes that match the node type.
-    treeTraversal(fn_body, &count, nodeType);
-
-    // Print the count of the node type.
-    if(count > 0){
-      printf("%s: %d\n", nodeTypeName[nodeType], count);
-    }
-  }
-  */
 
   /*
    * Homework 1 Milestone 1
