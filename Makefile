@@ -1,20 +1,23 @@
 CC = gcc
-CFLAGS = -g -Wall -DDEBUG
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -DDEBUG -Wno-unused-variable
+CFLAGS = -g -Wall -Wno-unused-variable
 
 DEST = compile
 
-HFILES = error.h  global.h  protos.h symbol-table.h  syntax-tree.h
+HFILES = error.h  global.h  protos.h symbol-table.h  syntax-tree.h 
 
 CFILES = error.c \
-	lex.yy.c \
-	main.c\
-	print.c \
-	process_syntax_tree.c \
-	symbol-table.c\
-	syntax-tree.c \
-	util.c\
-	y.tab.c
+homework0.c \
+intermediate-language.c \
+lex.yy.c \
+main.c \
+print.c \
+process_syntax_tree.c \
+symbol-table.c \
+syntax-tree.c \
+util.c \
+y.tab.c \
+	
 
 OFILES = $(CFILES:.c=.o)
 

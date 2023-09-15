@@ -5,18 +5,9 @@
 #include "protos.h"
 #include "syntax-tree.h"
 #include <stdio.h>
+#include "intermediate-language.h"
 
 
-
-static char *nodeTypeName[] = {"Error",     "Intcon",     "Charcon",
-                               "Stringcon", "Var",        "ArraySubscript",
-                               "Plus",      "UnaryMinus", "BinaryMinus",
-                               "Mult",      "Div",        "Equals",
-                               "Neq",       "Leq",        "Lt",
-                               "Geq",       "Gt",         "LogicalAnd",
-                               "LogicalOr", "LogicalNot", "FunCall",
-                               "Assg",      "Return",     "For",
-                               "While",     "If",         "STnodeList"};
 
 // Print the syntax tree.
 extern void printSyntaxTree(tnode *t, int n, int depth);
