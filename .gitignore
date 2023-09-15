@@ -53,3 +53,9 @@ dkms.conf
 .vscode/
 
 ./compile
+
+*.o 
+*.BAK
+lex.yy.c
+y.tab.*
+y.output

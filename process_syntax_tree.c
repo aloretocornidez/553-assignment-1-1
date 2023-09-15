@@ -3,42 +3,7 @@
  * Purpose: Code to traverse the syntax tree of each function and
  *     perform any desired actions.
  */
-
-#include "global.h"
-#include "protos.h"
-#include "syntax-tree.h"
-#include <stdio.h>
-
-static char *nodeTypeName[] = {"Error",     "Intcon",     "Charcon",
-                               "Stringcon", "Var",        "ArraySubscript",
-                               "Plus",      "UnaryMinus", "BinaryMinus",
-                               "Mult",      "Div",        "Equals",
-                               "Neq",       "Leq",        "Lt",
-                               "Geq",       "Gt",         "LogicalAnd",
-                               "LogicalOr", "LogicalNot", "FunCall",
-                               "Assg",      "Return",     "For",
-                               "While",     "If",         "STnodeList"};
-
-// Print the syntax tree.
-extern void printSyntaxTree(tnode *t, int n, int depth);
-
-
-
-
-
-// Generate mips code using symbol table entries. 
-void generateIntermediateCode();
-
-// Generate mips code from the generated intermediate language.
-void generateMipsCode();
-
-
-
-
-
-
-
-
+#include "process_syntax_tree.h"
 
 /*
  * Count the number of nodes of the passed in type.
@@ -142,17 +107,15 @@ void treeTraversal(tnode *fn_body, int *count, int testNodeType) {
   }
 }
 
-
 // Homework 0
-void countNodeTypes(symtabnode *fn_name, tnode *fn_body)
-{
- 
+void countNodeTypes(symtabnode *fn_name, tnode *fn_body) {
+
   // Print function name
   // printf("@@FUN: %s\n", fn_name->name);
 
-  // Test each possible node type and traverse the tree to get a count for the number of that node type.
-  for(int nodeType = 0; nodeType < 27; nodeType++)
-  {
+  // Test each possible node type and traverse the tree to get a count for the
+  // number of that node type.
+  for (int nodeType = 0; nodeType < 27; nodeType++) {
 
     // Reset count
     int count = 0;
@@ -161,13 +124,28 @@ void countNodeTypes(symtabnode *fn_name, tnode *fn_body)
     treeTraversal(fn_body, &count, nodeType);
 
     // Print the count of the node type.
-    if(count > 0){
+    if (count > 0) {
       printf("%s: %d\n", nodeTypeName[nodeType], count);
     }
   }
-  
+}
+
+
+
+
+
+
+void generateMipsCode()
+{
 
 }
+
+void generateIntermediateCode() 
+{
+
+}
+
+
 
 
 
@@ -187,19 +165,17 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
   printf("-----\n");
 #endif
 
-
-
   /*
    * Homework 1 Milestone 1
    */
-  
+
   // Generate the Intermediate language.
   generateIntermediateCode();
 
   // Generate mips code.
   generateMipsCode();
 
-  // 
+  //
 
   return;
 }
