@@ -11,8 +11,6 @@ int main(void) {
   SymTabInit(Global);
   SymTabInit(Local);
 
-  printf("Hellow");
-
   if (yyparse() < 0) {
     printf("main: syntax error\n");
     status = 1;
