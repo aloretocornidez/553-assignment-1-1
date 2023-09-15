@@ -1,13 +1,12 @@
-# Assignment 1 | Milestone 1 
+# Assignment 1 | Milestone 1
 
-
-## Scope 
+## Scope
 
 - Global and Local Variables
-- Function Bodies 
+- Function Bodies
 - Statements
-    - Assignment Statements 
-    - Function Calls 
-- Expressions 
-    - Integer Constants
-    - Scalar Variables
+  - Assignment Statements
+  - Function Calls
+- Expressions
+  - Integer Constants
+  - Scalar Variables
