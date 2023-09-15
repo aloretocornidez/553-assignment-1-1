@@ -45,6 +45,111 @@ codeGen_stmt(S)
 
 
 
+
+
+void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType)
+{
+
+    tnode *tntmp0;
+
+    // Check if the node exists.
+    if (fn_body == NULL)
+    {
+        return;
+    }
+
+    // Increase the count of the node type if the node matches the current test
+    // node.
+    if (fn_body->ntype == testNodeType)
+    {
+        // printf("fn_body->type matches testNodeType with value: (%d): %s\n",
+        // testNodeType, nodeTypeName[fn_body->ntype]);
+        (*count)++;
+    }
+    // Iterate syntax tree with proper recursive pointers.
+    switch (fn_body->ntype)
+    {
+    case Error:
+    case Intcon:
+    case Charcon:
+    case Stringcon:
+    case Var:
+        break;
+
+    case ArraySubscript:
+        intermediateTreeTraversal(stArraySubscript_Subscript(fn_body), count, testNodeType);
+
+        break;
+
+    case UnaryMinus:
+    case LogicalNot:
+        intermediateTreeTraversal(stUnop_Op(fn_body), count, testNodeType);
+
+        break;
+
+    case Plus:
+    case BinaryMinus:
+    case Mult:
+    case Div:
+    case Equals:
+    case Neq:
+    case Leq:
+    case Lt:
+    case Geq:
+    case Gt:
+    case LogicalAnd:
+    case LogicalOr:
+        intermediateTreeTraversal(stBinop_Op1(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stBinop_Op2(fn_body), count, testNodeType);
+        break;
+
+    case FunCall:
+        intermediateTreeTraversal(stFunCall_Args(fn_body), count, testNodeType);
+        break;
+
+    case Assg:
+        intermediateTreeTraversal(stAssg_Lhs(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stAssg_Rhs(fn_body), count, testNodeType);
+        break;
+
+    case Return:
+        intermediateTreeTraversal(stReturn(fn_body), count, testNodeType);
+
+        break;
+
+    case For:
+        intermediateTreeTraversal(stFor_Init(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stFor_Test(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stFor_Update(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stFor_Body(fn_body), count, testNodeType);
+        break;
+
+    case While:
+        intermediateTreeTraversal(stWhile_Test(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stWhile_Body(fn_body), count, testNodeType);
+        break;
+
+    case If:
+        intermediateTreeTraversal(stIf_Test(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stIf_Then(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stIf_Else(fn_body), count, testNodeType);
+
+        break;
+
+    case STnodeList: /* list of syntax tree nodes */
+        for (tntmp0 = fn_body; tntmp0 != NULL; tntmp0 = stList_Rest(tntmp0))
+        {
+            intermediateTreeTraversal(stList_Head(tntmp0), count, testNodeType);
+        }
+
+        break;
+
+    default:
+        fprintf(stderr, "Unknown syntax tree node type %d\n", fn_body->ntype);
+    }
+}
+
+
  
  
 
@@ -52,8 +157,7 @@ codeGen_stmt(S)
 // This function recursively traverses the tree and creates antermediate code for each of the encountered 
 void generateIntermediateCode()
 {
-  // Recursively traverse the syntax tree
-  
+  // Recursively traverse the syntax tree  
 
   // Code for each node is a list of three-address instructions
 
@@ -62,6 +166,7 @@ void generateIntermediateCode()
   // At each syntax tree node, create  alist of instructions that executes the computation for the syntax tree rooted at the node
   
   // Glue together the instructions for its children, plus code specific to that node.
+
 
 
 
