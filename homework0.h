@@ -23,6 +23,8 @@ static char *nodeTypeName[] = {"Error",     "Intcon",     "Charcon",
                                "Assg",      "Return",     "For",
                                "While",     "If",         "STnodeList"};
                                
+
+                               
 void treeTraversal(tnode *fn_body, int *count, int testNodeType);
 
 // Homework 0

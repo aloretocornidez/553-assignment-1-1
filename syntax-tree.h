@@ -54,9 +54,7 @@ struct stmt {  // statements
 
 typedef struct treenode {
   enum SyntaxNodeType ntype;   // the node type for a syntax tree node
-  int etype;  // the type of the value of a syntax tree node, once that
-              // node has been evaluated.  For nodes that don't have a
-              // value, e.g., statements, this is set to t_None.
+  int etype;  // the type of the value of a syntax tree node, once that node has been evaluated.  For nodes that don't have a value, e.g., statements, this is set to t_None.
   union {
     int iconst;
     char *strconst;

@@ -41,11 +41,11 @@ struct instr *newInstr(op operation, arg_1 arg1, arg_2 arg2);
 */
 
  
-void intermediateTreeTraversal(tnode *fn_body, int testNodeType);
+void intermediateTreeTraversal(tnode *fn_body);
 
 // generateIntermediate Code
 // This function recursively traverses the tree and creates antermediate code for each of the encountered 
-void generateIntermediateCode();
+void generateIntermediateCode(symtabnode *fn_name, tnode *fn_body);
 
 /*
  * CleanupFnInfo() -- clean up after processing information

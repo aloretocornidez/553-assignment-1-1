@@ -3,10 +3,18 @@
  * Purpose: Code to traverse the syntax tree of each function and
  *     perform any desired actions.
  */
-#include "process_syntax_tree.h"
+#include "global.h"
+#include "protos.h"
+#include "syntax-tree.h"
+#include <stdio.h>
+#include "intermediate-language.h"
+
 #include "homework0.h"
 
 
+
+// Print the syntax tree.
+extern void printSyntaxTree(tnode *t, int n, int depth);
 
 
 
@@ -34,7 +42,7 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
   generateIntermediateCode(fn_name, fn_body);
 
   // Generate mips code.
-  generateMipsCode();
+  // generateMipsCode();
 
 
   return;
