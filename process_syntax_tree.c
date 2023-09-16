@@ -19,7 +19,7 @@
  * This function can be used to carry out tree traversals of the
  * function's syntax tree.
  */
-void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
+process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
 #ifdef DEBUG
   printf("@@FUN: %s\n", fn_name->name);
   printf("@@BODY:\n");
@@ -31,7 +31,7 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
    * Homework 1 Milestone 1
    */
   // Generate the Intermediate language.
-  generateIntermediateCode();
+  generateIntermediateCode(fn_name, fn_body);
 
   // Generate mips code.
   generateMipsCode();

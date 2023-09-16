@@ -2,6 +2,9 @@
 // Author: Alan Manuel Loreto Cornidez
 // Purpose: Code definition file for intermediate code generation.
 #include "intermediate-language.h"
+#include "symbol-table.h"
+#include "syntax-tree.h"
+#include "protos.h"
 
 /*
 struct symtab_entry *newTemp(typename t)
@@ -47,7 +50,7 @@ codeGen_stmt(S)
 
 
 
-void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType)
+void intermediateTreeTraversal(tnode *fn_body, int testNodeType)
 {
 
     tnode *tntmp0;
@@ -64,7 +67,7 @@ void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType)
     {
         // printf("fn_body->type matches testNodeType with value: (%d): %s\n",
         // testNodeType, nodeTypeName[fn_body->ntype]);
-        (*count)++;
+        
     }
     // Iterate syntax tree with proper recursive pointers.
     switch (fn_body->ntype)
@@ -77,13 +80,13 @@ void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType)
         break;
 
     case ArraySubscript:
-        intermediateTreeTraversal(stArraySubscript_Subscript(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stArraySubscript_Subscript(fn_body), testNodeType);
 
         break;
 
     case UnaryMinus:
     case LogicalNot:
-        intermediateTreeTraversal(stUnop_Op(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stUnop_Op(fn_body), testNodeType);
 
         break;
 
@@ -99,47 +102,47 @@ void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType)
     case Gt:
     case LogicalAnd:
     case LogicalOr:
-        intermediateTreeTraversal(stBinop_Op1(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stBinop_Op2(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stBinop_Op1(fn_body), testNodeType);
+        intermediateTreeTraversal(stBinop_Op2(fn_body), testNodeType);
         break;
 
     case FunCall:
-        intermediateTreeTraversal(stFunCall_Args(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stFunCall_Args(fn_body), testNodeType);
         break;
 
     case Assg:
-        intermediateTreeTraversal(stAssg_Lhs(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stAssg_Rhs(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stAssg_Lhs(fn_body), testNodeType);
+        intermediateTreeTraversal(stAssg_Rhs(fn_body), testNodeType);
         break;
 
     case Return:
-        intermediateTreeTraversal(stReturn(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stReturn(fn_body), testNodeType);
 
         break;
 
     case For:
-        intermediateTreeTraversal(stFor_Init(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stFor_Test(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stFor_Update(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stFor_Body(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stFor_Init(fn_body), testNodeType);
+        intermediateTreeTraversal(stFor_Test(fn_body), testNodeType);
+        intermediateTreeTraversal(stFor_Update(fn_body), testNodeType);
+        intermediateTreeTraversal(stFor_Body(fn_body), testNodeType);
         break;
 
     case While:
-        intermediateTreeTraversal(stWhile_Test(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stWhile_Body(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stWhile_Test(fn_body), testNodeType);
+        intermediateTreeTraversal(stWhile_Body(fn_body), testNodeType);
         break;
 
     case If:
-        intermediateTreeTraversal(stIf_Test(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stIf_Then(fn_body), count, testNodeType);
-        intermediateTreeTraversal(stIf_Else(fn_body), count, testNodeType);
+        intermediateTreeTraversal(stIf_Test(fn_body), testNodeType);
+        intermediateTreeTraversal(stIf_Then(fn_body), testNodeType);
+        intermediateTreeTraversal(stIf_Else(fn_body), testNodeType);
 
         break;
 
     case STnodeList: /* list of syntax tree nodes */
         for (tntmp0 = fn_body; tntmp0 != NULL; tntmp0 = stList_Rest(tntmp0))
         {
-            intermediateTreeTraversal(stList_Head(tntmp0), count, testNodeType);
+            intermediateTreeTraversal(stList_Head(tntmp0), testNodeType);
         }
 
         break;

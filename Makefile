@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -DDEBUG -Wno-unused-variable
-CFLAGS = -g -Wall -Wno-unused-variable
+CFLAGS = -g -Wall -Wno-unused-variable -Werror -Wfatal-errors
 
 DEST = compile
 

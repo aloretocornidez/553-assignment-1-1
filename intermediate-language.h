@@ -6,6 +6,8 @@
 #define INTERMEDIATE_LANGUAGE_H
 
 #include "syntax-tree.h"
+#include <stdio.h>
+#include "symbol-table.h"
 
 /*
 
@@ -39,7 +41,7 @@ struct instr *newInstr(op operation, arg_1 arg1, arg_2 arg2);
 */
 
  
-void intermediateTreeTraversal(tnode *fn_body, int *count, int testNodeType);
+void intermediateTreeTraversal(tnode *fn_body, int testNodeType);
 
 // generateIntermediate Code
 // This function recursively traverses the tree and creates antermediate code for each of the encountered 
