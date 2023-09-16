@@ -47,9 +47,6 @@ codeGen_stmt(S)
 */
 
 
-
-
-
 void intermediateTreeTraversal(tnode *fn_body, int testNodeType)
 {
 
@@ -117,7 +114,6 @@ void intermediateTreeTraversal(tnode *fn_body, int testNodeType)
 
     case Return:
         intermediateTreeTraversal(stReturn(fn_body), testNodeType);
-
         break;
 
     case For:
