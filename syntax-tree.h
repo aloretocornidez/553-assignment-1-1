@@ -62,6 +62,11 @@ typedef struct treenode {
     struct expr exprNode;
     struct stmt stmtNode;
   } val;
+
+
+  symtabnode *place;
+
+  
 } tnode, *tnptr;
 
 tnode *mkConstNode(SyntaxNodeType ntype, int etype, int n);

@@ -9,6 +9,29 @@
 #include <stdio.h>
 #include "symbol-table.h"
 
+typedef enum OpType
+{
+    PLUS
+
+}OpType;
+
+typedef struct {
+    OpType operand_type;
+union {
+    int iconst; // integer const.
+    symtabnode *stptr;
+} val;
+} Operand;
+
+struct instr
+{
+    OpType op; // PLUS, MINUS, etc.
+    Operand src1; // source operand 1
+    Operand src2; // source operand 2
+
+
+};
+
 /*
 
 struct symtab_entry
@@ -17,10 +40,6 @@ struct symtab_entry
 
 };
 
-struct instr
-{
-
-};
 
 
 // Create a symbol table entry for a new temporary
@@ -41,7 +60,11 @@ struct instr *newInstr(op operation, arg_1 arg1, arg_2 arg2);
 */
 
  
-void intermediateTreeTraversal(tnode *fn_body);
+// void codeGenStatement(tnode *S);
+
+
+
+// void intermediateTreeTraversal(tnode *fn_body);
 
 // generateIntermediate Code
 // This function recursively traverses the tree and creates antermediate code for each of the encountered 

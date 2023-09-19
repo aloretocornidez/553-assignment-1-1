@@ -5,6 +5,8 @@
 #include "symbol-table.h"
 #include "syntax-tree.h"
 #include "protos.h"
+#include <assert.h>
+
 
 /*
 struct symtab_entry *newTemp(typename t)
@@ -46,10 +48,92 @@ codeGen_stmt(S)
 
 */
 
+
+
+
+typedef enum lr
+{
+    L_value,
+    R_value
+}lr;
+
+void codeGenExpression(tnode* node, lr valueType)
+{
+    switch (node->ntype)
+    {
+        case Intcon:
+        assert(0);
+        break;
+
+
+        case Var:
+        node->place = SymTabPtr(node);
+
+        break;
+        
+        
+        default:
+
+
+        assert(0);
+
+    }
+
+
+}
+
+// Conde Generation Statement.
+void codeGenStatement(tnode *S)
+{
+
+
+
+    switch(S->ntype)
+    {
+
+        case Assg:
+        codeGenExpression(LChild(S), L_value);
+        codeGenExpression(RChild(S), R_value);
+
+        // Stitch the code together
+        
+
+        break;
+  
+        case Return:
+        assert(0);
+        break;
+
+        case For:
+        assert(0);
+        break;
+
+        case While:
+        assert(0);
+        break;
+
+        case If:
+        assert(0);
+        break;
+
+        case STnodeList:
+        assert(0);
+        break;
+
+        default:
+        assert(0);
+        break;
+
+    }
+
+}
+
+
 void intermediateTreeTraversal(tnode *fn_body)
 {
 
     tnode *tntmp0;
+
 
     // Check if the node exists.
     if (fn_body == NULL)
@@ -62,6 +146,11 @@ void intermediateTreeTraversal(tnode *fn_body)
     {
     case Error:
     case Intcon:
+
+
+    break;
+
+
     case Charcon:
     case Stringcon:
     case Var:
@@ -98,6 +187,7 @@ void intermediateTreeTraversal(tnode *fn_body)
         break;
 
     case Assg:
+        // 
         intermediateTreeTraversal(stAssg_Lhs(fn_body));
         intermediateTreeTraversal(stAssg_Rhs(fn_body));
         break;
