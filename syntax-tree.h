@@ -63,8 +63,11 @@ typedef struct treenode {
     struct stmt stmtNode;
   } val;
 
-
+  // id.loc from the 04-code generation slides.
   symtabnode *place;
+
+  // code from 04 generation slides.
+  code
 
   
 } tnode, *tnptr;

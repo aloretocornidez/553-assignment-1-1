@@ -17,8 +17,6 @@
 extern void printSyntaxTree(tnode *t, int n, int depth);
 
 
-
-
 /*
  * process_syntax_tree(fn_name, fn_body) -- fn_name is a poiner to
  * the symbol table entry of the function being processed (which can
