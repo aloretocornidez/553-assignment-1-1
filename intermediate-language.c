@@ -18,25 +18,27 @@ struct symtab_entry *newtemp(tnode t) {
   return ntmp;
 }
 
+
+// TODO: Fill in variables and variable types.
+// Create a new instruction, fill in the arugments.
+// Return a pointer to the  result.
+struct instr *newInstr(OpType opType, Operand src1, Operand src2,Operand dest) {
+  struct instr *ninstr = malloc(sizeof(instr));
+  ninstr->operandType = opType;
+  ninstr->src1 = src1;
+  ninstr->src2 = src2;
+  ninstr->dest = dest;
+  return ninstr;
+}
+
 // Global Variable to keep track of the label number.
 static int label_num = 0;
 struct instr *newLabel() {
   // return newInstr(LABEL, label_num++;);
-  return newInstr(LABEL, label_num++;);
+  // return newInstr(); 
+  label_num++;
   
 }
-
-// TODO: Fill in fariables and variable types.
-// Create a new instruction, fill in the arugments.
-// Return a pointer to the  result.
-struct instr *newInstr(OpType opType, Operand src1, Operand src2,Operand dest) {
-  struct instr *ninstr = malloc(sizeof(instruction));
-  // ninstr->operandType = opType;
-  // ninstr->src1 = src1;
-  // ninstr->src2 = src2;
-  // ninstr->dest = dest;
-}
-
 // codeGenExpression makes the
 void codeGenExpression(tnode *node, lr valueType) {
   switch (node->ntype) {
@@ -46,6 +48,7 @@ void codeGenExpression(tnode *node, lr valueType) {
 
   case Var:
     node->place = SymTabPtr(node);
+
     break;
 
   default:

@@ -21,7 +21,6 @@ typedef enum OpType {
 // Operand is the kind of operation that is being conducted in a statement.
 typedef struct Operand {
   OpType operandType;
-
   union {
     int iconst;        // integer const.
     symtabnode *stptr; // symbol table pointer.
@@ -32,18 +31,16 @@ typedef struct Operand {
 // destination.
 typedef struct instr {
   // PLUS, MINUS, etc.
-  OpType op;
+  OpType operandType;
   // source operand 1
   Operand src1;
   // source operand 2
   Operand src2;
   // destination of the instruction
-  Operand destination;
-
+  Operand dest;
   // points to the list of the instructions
   struct instr *next;
 } instr;
-
 
 // Create a symbol table entry for a new temporary
 // Return a pointer to this ST entry.
@@ -57,12 +54,9 @@ struct instr *newLabel();
 // Return a pointer to the result
 struct instr *newInstr(OpType opType, Operand src1, Operand src2, Operand dest);
 
-/*
- * Function Prototypes
- *
- */
+// Recursive function to traverse the tree.
+// Runs intermediate code generation logic while traversing.
 void intermediateTreeTraversal(tnode *fn_body);
-
 
 // This function generates the expression.
 void codeGenExpression(tnode *node, lr valueType);
@@ -71,11 +65,11 @@ void codeGenExpression(tnode *node, lr valueType);
 void codeGenStatement(tnode *node);
 
 // generateIntermediateCode
-// This function genrates the symbol tables for all of the nodes in the syntax tree.
+// This function genrates the symbol tables for all of the nodes in the syntax
+// tree.
 void generateIntermediateCode(symtabnode *fn_name, tnode *fn_body);
 
-// Generate mips code from the symbol table. 
+// Generate mips code from the symbol table.
 void generateMipsCode();
-
 
 #endif // INTERMEDIATE_LANGUAGE_H
