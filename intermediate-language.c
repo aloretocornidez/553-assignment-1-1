@@ -12,17 +12,17 @@
 // return a pointer to this new symbol tabl entry.
 struct symtab_entry *newtemp(tnode t) {
   struct symtab_entry *ntmp = malloc(sizeof(tnode));
-  // ntmp->name = ; //  ...create a new name that doesn’t conflict...
+  ntmp->name = newLabel(); //  ...create a new name that doesn’t conflict...
   // ntmp->type = tnode->ntype
   // ...insert ntmp into the function's local symbol table...
   return ntmp;
 }
 
-
 // TODO: Fill in variables and variable types.
 // Create a new instruction, fill in the arugments.
 // Return a pointer to the  result.
-struct instr *newInstr(OpType opType, Operand src1, Operand src2,Operand dest) {
+struct instr *newInstr(OpType opType, Operand src1, Operand src2,
+                       Operand dest) {
   struct instr *ninstr = malloc(sizeof(instr));
   ninstr->operandType = opType;
   ninstr->src1 = src1;
@@ -35,21 +35,35 @@ struct instr *newInstr(OpType opType, Operand src1, Operand src2,Operand dest) {
 static int label_num = 0;
 struct instr *newLabel() {
   // return newInstr(LABEL, label_num++;);
-  // return newInstr(); 
+  // return newInstr();
   label_num++;
-  
 }
-// codeGenExpression makes the
-void codeGenExpression(tnode *node, lr valueType) {
+// codeGenExpression this 
+void codeGenExpression(tnode *node, lr lr_value) {
   switch (node->ntype) {
-  case Intcon:
-    assert(0);
-    break;
+
+  // case Intcon:
+  //   assert(0);
+  //   break;
 
   case Var:
-    node->place = SymTabPtr(node);
+      if(lr_value == L_value)
+      {
+
+
+      }
+      else if (lr_value == R_value) 
+      {
+
+      }
+    // node->place = SymTabPtr(node);
 
     break;
+
+  case Assg:
+    // If the node is an assignment variable, then the left side is set to the right side.
+
+    
 
   default:
     assert(0);
@@ -59,38 +73,31 @@ void codeGenExpression(tnode *node, lr valueType) {
 // Conde Generation Statement makes the
 void codeGenStatement(tnode *S) {
   switch (S->ntype) {
-
   case Assg:
     codeGenExpression(LChild(S), L_value);
     codeGenExpression(RChild(S), R_value);
-    // Append different pieces of code.
+    // Stitch the code together by stitching linked lists together.
+
     // S->code = LChild(S)->code + RChild(S)->code + newInstr(Assg,
     // RChild(S)->place, NULL, LChild(S)->place);
 
-    // Stitch the code together by stitching linked lists together.
 
     break;
-
   case Return:
     assert(0);
     break;
-
   case For:
     assert(0);
     break;
-
   case While:
     assert(0);
     break;
-
   case If:
     assert(0);
     break;
-
   case STnodeList:
     assert(0);
     break;
-
   default:
     assert(0);
     break;
@@ -110,7 +117,8 @@ void intermediateTreeTraversal(tnode *fn_body) {
   switch (fn_body->ntype) {
   case Error:
   case Intcon:
-    // Generate the code for
+    // Generate the code for the integer type node.
+
     break;
 
   case Charcon:
@@ -149,9 +157,11 @@ void intermediateTreeTraversal(tnode *fn_body) {
     break;
 
   case Assg:
-    //
     intermediateTreeTraversal(stAssg_Lhs(fn_body));
     intermediateTreeTraversal(stAssg_Rhs(fn_body));
+    // After the two children of the node are processed, generate the code for
+    // this node and then stich it together.
+    codeGenStatement(fn_body);
     break;
 
   case Return:
