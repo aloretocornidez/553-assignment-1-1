@@ -6,14 +6,18 @@
 #include "symbol-table.h"
 #include "syntax-tree.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 // This function creates a new symbol table entry for a new temportary.
 // return a pointer to this new symbol tabl entry.
 struct symtab_entry *newtemp(tnode t) {
   struct symtab_entry *ntmp = malloc(sizeof(tnode));
-  ntmp->name = newLabel(); //  ...create a new name that doesn’t conflict...
+
+
+  // ntmp->name = newLabel(); //  ...create a new name that doesn’t conflict...
   // ntmp->type = tnode->ntype
+  //
   // ...insert ntmp into the function's local symbol table...
   return ntmp;
 }
