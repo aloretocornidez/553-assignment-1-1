@@ -7,7 +7,6 @@
 #ifndef _SYNTAX_TREE_H_
 #define _SYNTAX_TREE_H_
 
-#include "intermediate-language.h"
 #include "symbol-table.h"
 
 // SyntaxNodeType contains the ntype of the node.
@@ -74,7 +73,7 @@ typedef struct treenode {
   symtabnode *place;
 
   // This is a pointer to the list of instrructions that pertain to that node.
-  instr* code;
+  struct instr* code;
 
 } tnode, *tnptr;
 

@@ -11,7 +11,7 @@
 
 // This function creates a new symbol table entry for a new temportary.
 // return a pointer to this new symbol tabl entry.
-struct symtab_entry *newtemp(tnode t) {
+struct symtab_entry *newtemp(tnode* t) {
   struct symtab_entry *ntmp = malloc(sizeof(tnode));
 
 

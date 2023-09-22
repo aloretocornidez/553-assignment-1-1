@@ -44,7 +44,7 @@ typedef struct instr {
 
 // Create a symbol table entry for a new temporary
 // Return a pointer to this ST entry.
-struct symtab_entry *newtemp(tnode t);
+struct symtab_entry *newtemp(tnode* t);
 
 // Return a new label.
 struct instr *newLabel();
