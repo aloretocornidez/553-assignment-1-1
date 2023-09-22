@@ -10,8 +10,8 @@
 
 // This function creates a new symbol table entry for a new temportary.
 // return a pointer to this new symbol tabl entry.
-symtabnode *newtemp(tnode t) {
-  struct symbolTableEntry *ntmp = malloc(sizeof(tnode));
+struct symtab_entry *newtemp(tnode t) {
+  struct symtab_entry *ntmp = malloc(sizeof(tnode));
   // ntmp->name = ; //  ...create a new name that doesn’t conflict...
   // ntmp->type = tnode->ntype
   // ...insert ntmp into the function's local symbol table...
@@ -20,19 +20,18 @@ symtabnode *newtemp(tnode t) {
 
 // Global Variable to keep track of the label number.
 static int label_num = 0;
-struct instruction *newLabel() {
+struct instr *newLabel() {
   // return newInstr(LABEL, label_num++;);
-  // return newInstr(LABEL, label_num++;);
-  //
+  return newInstr(LABEL, label_num++;);
+  
 }
 
 // TODO: Fill in fariables and variable types.
 // Create a new instruction, fill in the arugments.
 // Return a pointer to the  result.
-struct instruction *newInstr(OpType opType, Operand src1, Operand src2,
-                       Operand dest) {
-  struct instruction *ninstr = malloc(sizeof(instruction));
-  // ninstr->operantType = opType;
+struct instr *newInstr(OpType opType, Operand src1, Operand src2,Operand dest) {
+  struct instr *ninstr = malloc(sizeof(instruction));
+  // ninstr->operandType = opType;
   // ninstr->src1 = src1;
   // ninstr->src2 = src2;
   // ninstr->dest = dest;
