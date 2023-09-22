@@ -25,7 +25,8 @@ OFILES = $(CFILES:.c=.o)
 	$(CC) $(CFLAGS) -c $<
 
 $(DEST) : $(OFILES)
-	$(CC) -o $(DEST) $(OFILES) -ll
+	$(CC) -o $(DEST) $(OFILES) -lfl
+	# $(CC) -o $(DEST) $(OFILES) -ll
 
 error.o : error.h global.h syntax-tree.h error.c y.tab.h
 

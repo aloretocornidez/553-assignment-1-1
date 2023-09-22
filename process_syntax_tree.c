@@ -4,18 +4,15 @@
  *     perform any desired actions.
  */
 #include "global.h"
+#include "intermediate-language.h"
 #include "protos.h"
 #include "syntax-tree.h"
 #include <stdio.h>
-#include "intermediate-language.h"
 
 #include "homework0.h"
 
-
-
 // Print the syntax tree.
 extern void printSyntaxTree(tnode *t, int n, int depth);
-
 
 /*
  * process_syntax_tree(fn_name, fn_body) -- fn_name is a poiner to
@@ -33,15 +30,11 @@ void process_syntax_tree(symtabnode *fn_name, tnode *fn_body) {
   printf("-----\n");
 #endif
 
-  /*
-   * Homework 1 Milestone 1
-   */
   // Generate the Intermediate language.
   generateIntermediateCode(fn_name, fn_body);
 
   // Generate mips code.
   // generateMipsCode();
-
 
   return;
 }
