@@ -14,7 +14,7 @@
 
 typedef struct stblnode {
   char *name;
-  int scope;
+  int scope; 
   bool formal;             /* true if formal, false o/2 */
   int type;                /* the type of the symbol */
   int elt_type;            /* the type of array elements */

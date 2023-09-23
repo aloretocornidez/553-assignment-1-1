@@ -9,24 +9,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// This function creates a new symbol table entry for a new temportary.
-// return a pointer to this new symbol tabl entry.
-struct symtab_entry *newtemp(tnode* t) {
-  struct symtab_entry *ntmp = malloc(sizeof(tnode));
+// This function creates a new symbol table entry for a new temporary.
+// return a pointer to this new symbol table entry.
+struct symtab_entry *newtemp(tnode *t) {
+  struct symtab_entry *ntmp = malloc(sizeof(symtabnode));
 
 
-  // ntmp->name = newLabel(); //  ...create a new name that doesn’t conflict...
+  // ntmp->name = generateSymbolTableName(); //  ...create a new name that doesn’t conflict...
   // ntmp->type = tnode->ntype
   //
   // ...insert ntmp into the function's local symbol table...
   return ntmp;
 }
 
-// TODO: Fill in variables and variable types.
-// Create a new instruction, fill in the arugments.
-// Return a pointer to the  result.
-struct instr *newInstr(OpType opType, Operand src1, Operand src2,
-                       Operand dest) {
+
+// newInstr returns a pointer to a new instruction.
+// This takes in as arguments:
+// the operation type
+// the sources and destinations.
+struct instr *newInstr(OpType opType, symtabnode* src1, symtabnode* src2,
+                       symtabnode* dest) {
   struct instr *ninstr = malloc(sizeof(instr));
   ninstr->operandType = opType;
   ninstr->src1 = src1;
@@ -37,37 +39,44 @@ struct instr *newInstr(OpType opType, Operand src1, Operand src2,
 
 // Global Variable to keep track of the label number.
 static int label_num = 0;
-struct instr *newLabel() {
+struct instr *newLabel(tnode* instruction) {
   // return newInstr(LABEL, label_num++;);
-  // return newInstr();
-  label_num++;
+  return newInstr( label_num++);
 }
-// codeGenExpression this 
+// codeGenExpression this
 void codeGenExpression(tnode *node, lr lr_value) {
   switch (node->ntype) {
 
-  // case Intcon:
-  //   assert(0);
-  //   break;
-
-  case Var:
+    case Intcon:
       if(lr_value == L_value)
       {
-
-
+        printf("Error: lr_value for integer constant assigned to L_value.");
+        assert(0);
       }
-      else if (lr_value == R_value) 
+      else if (lr_value == R_value)
       {
 
       }
+      // assert(0);
+      break;
+
+  case Var:
+    if (lr_value == L_value) {
+        // find the address of the variable.
+
+    } else if (lr_value == R_value) {
+      
+        
+    }
     // node->place = SymTabPtr(node);
 
     break;
 
   case Assg:
-    // If the node is an assignment variable, then the left side is set to the right side.
+    // If the node is an of type assignment, then the left side is set to the
+    // right side.
 
-    
+
 
   default:
     assert(0);
@@ -80,11 +89,13 @@ void codeGenStatement(tnode *S) {
   case Assg:
     codeGenExpression(LChild(S), L_value);
     codeGenExpression(RChild(S), R_value);
-    // Stitch the code together by stitching linked lists together.
+    // Stitch the code together by stitching linked lists of instructions
+    // together. The lists of instructions are gathered from the two children
+    // nodes.
+    
 
     // S->code = LChild(S)->code + RChild(S)->code + newInstr(Assg,
     // RChild(S)->place, NULL, LChild(S)->place);
-
 
     break;
   case Return:
@@ -155,7 +166,6 @@ void intermediateTreeTraversal(tnode *fn_body) {
     intermediateTreeTraversal(stBinop_Op1(fn_body));
     intermediateTreeTraversal(stBinop_Op2(fn_body));
     break;
-
   case FunCall:
     intermediateTreeTraversal(stFunCall_Args(fn_body));
     break;
