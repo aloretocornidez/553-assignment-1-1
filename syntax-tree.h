@@ -20,8 +20,7 @@ typedef enum SyntaxNodeType {
   Plus,
   UnaryMinus,
   BinaryMinus,
-  Mult,
-  Div,
+  Mult, Div,
   Equals,
   Neq,
   Leq,
@@ -61,16 +60,23 @@ typedef struct treenode {
   int etype; // the type of the value of a syntax tree node, once that node has
              // been evaluated.  For nodes that don't have a value, e.g.,
              // statements, this is set to t_None.
+  
+
+  // each tree node will either one of the following data points.
+  // If it is an integer, then set it to the integer that it is.
+  // If it is a string, then the strconst to the string.
+  // If it is a variable as a leaf, then set the varabable to the strefNode.
+  // If it is an expression, then set the two children.
+  // If it is a statement, then you set the kind of operation it is and the three children.
   union {
     int iconst;
     char *strconst;
-    struct stref strefNode;
-    struct expr exprNode;
+    struct stref strefNode; // A reference to the treenode and the symbol table node.
+    struct expr exprNode; // 
     struct stmt stmtNode;
   } val;
 
-  // id.loc from the 04-code generation slides.
-  symtabnode *place;
+  
 
   // This is a pointer to the list of instrructions that pertain to that node.
   struct instr* code;

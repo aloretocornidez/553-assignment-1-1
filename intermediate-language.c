@@ -14,59 +14,78 @@
 struct symtab_entry *newtemp(tnode *t) {
   struct symtab_entry *ntmp = malloc(sizeof(symtabnode));
 
-
-  // ntmp->name = generateSymbolTableName(); //  ...create a new name that doesn’t conflict...
-  // ntmp->type = tnode->ntype
+  // ntmp->name = generateSymbolTableName(); //  ...create a new name that
+  // doesn’t conflict... ntmp->type = tnode->ntype
   //
   // ...insert ntmp into the function's local symbol table...
+
   return ntmp;
 }
-
 
 // newInstr returns a pointer to a new instruction.
 // This takes in as arguments:
 // the operation type
 // the sources and destinations.
-struct instr *newInstr(OpType opType, symtabnode* src1, symtabnode* src2,
-                       symtabnode* dest) {
+struct instr *newInstr(OpType opType, symtabnode *src1, symtabnode *src2,
+                       symtabnode *dest) {
   struct instr *ninstr = malloc(sizeof(instr));
   ninstr->operandType = opType;
   ninstr->src1 = src1;
   ninstr->src2 = src2;
   ninstr->dest = dest;
+
   return ninstr;
+}
+
+// stichInstructionList : attaches the tail of the first list to the head of the
+// second list.
+void stichInstructionList(instr *firstIstrList, instr *secondIstrList) {
+  instr *temp;
+
+  temp = firstIstrList;
+
+  // Find the tail of the first list.
+  while (temp->next != NULL) {
+    temp = temp->next;
+  }
+
+  // Assign the pointer to the next instruction of the first list to the head of
+  // the first list.
+  temp->next = secondIstrList;
+
+  // Assign the previous of the second list to the tail of the first list.
+  secondIstrList->previous = temp;
 }
 
 // Global Variable to keep track of the label number.
 static int label_num = 0;
-struct instr *newLabel(tnode* instruction) {
+struct instr *newLabel() {
   // return newInstr(LABEL, label_num++;);
-  return newInstr( label_num++);
+  // return newInstr( label_num++);
 }
-// codeGenExpression this
+
+
+
+// codeGenExpression this function generates the expression for each node.
 void codeGenExpression(tnode *node, lr lr_value) {
   switch (node->ntype) {
 
-    case Intcon:
-      if(lr_value == L_value)
-      {
-        printf("Error: lr_value for integer constant assigned to L_value.");
-        assert(0);
-      }
-      else if (lr_value == R_value)
-      {
+  case Intcon:
+    if (lr_value == L_value) {
+      printf("Error: lr_value for integer constant assigned to L_value.");
+      assert(0);
+    } else if (lr_value == R_value) {
 
-      }
-      // assert(0);
-      break;
+      // symtabnode *stnode = SymTabPtr(node);
+    }
+    // assert(0);
+    break;
 
   case Var:
     if (lr_value == L_value) {
-        // find the address of the variable.
+      // find the address of the variable.
 
     } else if (lr_value == R_value) {
-      
-        
     }
     // node->place = SymTabPtr(node);
 
@@ -75,15 +94,14 @@ void codeGenExpression(tnode *node, lr lr_value) {
   case Assg:
     // If the node is an of type assignment, then the left side is set to the
     // right side.
-
-
+    //
 
   default:
     assert(0);
   }
 }
 
-// Conde Generation Statement makes the
+// codeGenExpression : Stiches the code from the two child nodes.
 void codeGenStatement(tnode *S) {
   switch (S->ntype) {
   case Assg:
@@ -92,7 +110,6 @@ void codeGenStatement(tnode *S) {
     // Stitch the code together by stitching linked lists of instructions
     // together. The lists of instructions are gathered from the two children
     // nodes.
-    
 
     // S->code = LChild(S)->code + RChild(S)->code + newInstr(Assg,
     // RChild(S)->place, NULL, LChild(S)->place);
@@ -133,6 +150,7 @@ void intermediateTreeTraversal(tnode *fn_body) {
   case Error:
   case Intcon:
     // Generate the code for the integer type node.
+    codeGenStatement(fn_body);
 
     break;
 

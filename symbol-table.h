@@ -26,6 +26,12 @@ typedef struct stblnode {
   struct stblnode *next;
 } symtabnode;
 
+
+
+
+
+
+
 /*********************************************************************
  *                                                                   *
  *                             Prototypes                            *
