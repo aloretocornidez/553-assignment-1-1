@@ -8,8 +8,8 @@
 #include "protos.h"
 #include "syntax-tree.h"
 #include <stdio.h>
-
-#include "homework0.h"
+#define DEBUG DEBUG
+// #include "homework0.h"
 
 // Print the syntax tree.
 extern void printSyntaxTree(tnode *t, int n, int depth);

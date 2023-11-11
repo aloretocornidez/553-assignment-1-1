@@ -52,9 +52,7 @@ void printSyntaxTree(tnode *t, int n, int depth)
 
   case Var:
     stptr = stVar(t);
-    printf("id(name=%s, scope=%s);\n", 
-	   stptr->name,
-	   (stptr->scope == Global ? "G" : "L"));
+    printf("id(name=%s, scope=%s);\n", stptr->name, (stptr->scope == Global ? "G" : "L"));
     break;
 
   case ArraySubscript:

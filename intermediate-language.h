@@ -52,9 +52,22 @@ typedef struct instr {
   struct instr *previous;
 } instr;
 
+
+
+/* 
+ * ----------------------------------------
+ *
+ *          Function Definitions
+ *
+ * ----------------------------------------
+ */
+
 // stichInstructionList : attaches the tail of the first list to the head of the 
 void stichInstructionList(instr *firstList, instr *secondHead);
 
+void generateIntermediateCode(symtabnode* fn_name, tnode* fn_body);
 
-// TODO :Function Definitions
+
+
+
 #endif // INTERMEDIATE_LANGUAGE_H

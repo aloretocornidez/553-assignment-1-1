@@ -9,12 +9,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+void generateSymbolTableName(symtabnode * stnode)
+{
+
+}
+
 // This function creates a new symbol table entry for a new temporary.
 // return a pointer to this new symbol table entry.
-struct symtab_entry *newtemp(tnode *t) {
-  struct symtab_entry *ntmp = malloc(sizeof(symtabnode));
+symtabnode *newtemp(tnode *t) {
+  symtabnode *ntemp = malloc(sizeof(symtabnode));
 
   // ntmp->name = generateSymbolTableName(); //  ...create a new name that
+  generateSymbolTableName(ntemp);
   // doesn’t conflict... ntmp->type = tnode->ntype
   //
   // ...insert ntmp into the function's local symbol table...
@@ -27,12 +34,17 @@ struct symtab_entry *newtemp(tnode *t) {
 // the operation type
 // the sources and destinations.
 struct instr *newInstr(OpType opType, symtabnode *src1, symtabnode *src2,
-                       symtabnode *dest) {
+                       symtabnode *dest ) {
   struct instr *ninstr = malloc(sizeof(instr));
   ninstr->operandType = opType;
   ninstr->src1 = src1;
   ninstr->src2 = src2;
   ninstr->dest = dest;
+
+  // Initialize pointers to the next instruction initialized as null.
+  
+  ninstr->previous = NULL;
+  ninstr->next = NULL;
 
   return ninstr;
 }
@@ -59,10 +71,11 @@ void stichInstructionList(instr *firstIstrList, instr *secondIstrList) {
 
 // Global Variable to keep track of the label number.
 static int label_num = 0;
-struct instr *newLabel() {
+// struct instr *newLabel(instr* instruction) {
   // return newInstr(LABEL, label_num++;);
   // return newInstr( label_num++);
-}
+  // newInstr(OpType opType, symtabnode *src1, symtabnode *src2, symtabnode *dest);
+// }
 
 
 
@@ -87,6 +100,7 @@ void codeGenExpression(tnode *node, lr lr_value) {
 
     } else if (lr_value == R_value) {
     }
+
     // node->place = SymTabPtr(node);
 
     break;
@@ -104,6 +118,8 @@ void codeGenExpression(tnode *node, lr lr_value) {
 // codeGenExpression : Stiches the code from the two child nodes.
 void codeGenStatement(tnode *S) {
   switch (S->ntype) {
+
+
   case Assg:
     codeGenExpression(LChild(S), L_value);
     codeGenExpression(RChild(S), R_value);
